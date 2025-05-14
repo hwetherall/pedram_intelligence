@@ -1,42 +1,52 @@
 [
   {
     "question_number": 4,
-    "probability_score": 4,
-    "impact_score": 5,
-    "overall_risk_score": 9,
-    "justification": "** Policy and regulatory shifts affecting nuclear power are likely given historical volatility in energy policy and the politically contentious nature of nuclear energy. The impact could be catastrophic as unfavorable regulatory decisions or policy changes could completely halt deployment, regardless of technological readiness or market demand.\n\n##",
-    "question": "How might changes in government policies and incentives, such as the Inflation Reduction Act, affect the market demand for nuclear power, and what regulatory risks could impede X-Energy's time-to-market compared to competitors?"
-  },
-  {
-    "question_number": 1,
-    "probability_score": 4,
-    "impact_score": 4,
-    "overall_risk_score": 8,
-    "justification": "** The contradiction between X-Energy's growth projections and industry decline creates a high probability of market overestimation. If actual addressable market proves substantially smaller, this would significantly threaten business viability by undermining the entire investment thesis and revenue model.\n\n##",
-    "question": "How does X-Energy reconcile its projected $7.0 billion Worldwide TAM by 2024 with the broader nuclear power industry's declining revenue (-0.9% CAGR 2019-2024) and decreasing grid share (from 19.1% to 17.6% 2019-2023)?"
+    "question_text": "What specific regulatory pathways exist for Gen IV nuclear technology deployment, and how might delays or changes in regulatory approval processes impact market entry timing and competitive positioning?",
+    "risk_category": "Regulatory & Policy Risk",
+    "probability": 5,
+    "impact": 5,
+    "risk_score": 25,
+    "risk_tier": "High",
+    "justification": "Nuclear regulations are notoriously complex and time-consuming, with approval processes often taking 5-10 years even for conventional designs. Novel Generation IV technologies face additional scrutiny, potentially leading to extended pre-revenue periods that deplete capital and allow competitors to establish market dominance while the venture remains unable to commercialize."
   },
   {
     "question_number": 2,
-    "probability_score": 5,
-    "impact_score": 3,
-    "overall_risk_score": 8,
-    "justification": "** Market barriers to nuclear adoption are virtually certain to persist based on historical patterns and current market conditions. The impact is moderated by X-Energy's potential technological advantages and policy support, but will still require significant resources and strategy adjustments to overcome.\n\n##",
-    "question": "What are the primary market barriers to the adoption of Generation IV nuclear technology, and how does X-Energy plan to overcome these challenges compared to competing clean energy alternatives?"
+    "question_text": "What evidence suggests industrial customers and data centers are willing to adopt Generation IV nuclear technology over increasingly cost-competitive alternatives like renewables with storage or hydrogen-ready gas turbines?",
+    "risk_category": "Technology Adoption Risk",
+    "probability": 4,
+    "impact": 5,
+    "risk_score": 20,
+    "risk_tier": "High",
+    "justification": "Industrial customers and data centers prioritize reliability, cost-effectiveness, and rapid deployment\u2014areas where unproven Generation IV nuclear technology may struggle against established alternatives. Without demonstrated commercial installations and operational data, adoption rates could severely underperform projections, especially with rapidly improving economics for competing solutions."
   },
   {
     "question_number": 3,
-    "probability_score": 3,
-    "impact_score": 4,
-    "overall_risk_score": 7,
-    "justification": "** While there's theoretical demand for clean industrial heat and hydrogen production, the commercial viability remains uncertain, making insufficient market demand possible. If these specialized markets fail to materialize at projected scale, X-Energy would face major impacts requiring substantial business model revision.\n\n##",
-    "question": "How does X-Energy's focus on industrial heat applications and hydrogen production differentiate it from competitors, and what market research validates sufficient demand in these sectors to justify the pivot away from traditional electricity generation?"
+    "question_text": "How does the venture plan to navigate the competitive landscape from both established nuclear players and adjacent technologies (renewables, traditional nuclear, fossil fuels with CCS) that are capturing significant decarbonization budgets?",
+    "risk_category": "Competitive Landscape Risk",
+    "probability": 5,
+    "impact": 4,
+    "risk_score": 20,
+    "risk_tier": "High",
+    "justification": "The decarbonization market features intense competition from established nuclear companies, renewable energy providers, and fossil fuel players transitioning to cleaner technologies. These competitors have operational track records, existing customer relationships, and substantial capital resources that a pre-revenue startup lacks, potentially limiting its ability to capture meaningful market share."
+  },
+  {
+    "question_number": 1,
+    "question_text": "How does the venture reconcile its projected TAM growth with historically slow nuclear adoption rates and third-party market reports showing significantly different market sizes for Generation IV technology?",
+    "risk_category": "Market Size & Growth Risk",
+    "probability": 4,
+    "impact": 4,
+    "risk_score": 16,
+    "risk_tier": "High",
+    "justification": "Nuclear power has historically faced slow adoption due to regulatory hurdles, high capital costs, and safety concerns. A pre-revenue startup's TAM projections that differ significantly from third-party market reports likely reflects optimistic assumptions that may not materialize, threatening investment returns and valuation justification."
   },
   {
     "question_number": 5,
-    "probability_score": 3,
-    "impact_score": 3,
-    "overall_risk_score": 6,
-    "justification": "** Competitive disadvantages are possible as multiple Generation IV technologies race",
-    "question": "How does X-Energy's TRISO-X fuel and Xe-100 technology compete on cost, performance, and safety with alternative Generation IV technologies like TerraPower's sodium-cooled designs that are also nearing deployment?"
+    "question_text": "How reliant is the venture's market growth on government grants, subsidies, and favorable policies, and what is the impact on market viability if such support is reduced or withdrawn?",
+    "risk_category": "Policy Dependency Risk",
+    "probability": 4,
+    "impact": 4,
+    "risk_score": 16,
+    "risk_tier": "High",
+    "justification": "Nuclear ventures typically depend heavily on government subsidies, tax credits, and supportive policies to achieve economic viability. Political shifts or budgetary constraints could rapidly change the subsidy landscape, potentially rendering the venture's business model unviable if it cannot compete on pure market economics without ongoing government support."
   }
 ]

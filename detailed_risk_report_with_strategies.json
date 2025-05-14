@@ -1,0 +1,208 @@
+[
+  {
+    "question_number": 4,
+    "question_text": "What specific regulatory pathways exist for Gen IV nuclear technology deployment, and how might delays or changes in regulatory approval processes impact market entry timing and competitive positioning?",
+    "risk_category": "Regulatory & Policy Risk",
+    "probability": 5,
+    "impact": 5,
+    "risk_score": 25,
+    "risk_tier": "High",
+    "justification": "Nuclear regulations are notoriously complex and time-consuming, with approval processes often taking 5-10 years even for conventional designs. Novel Generation IV technologies face additional scrutiny, potentially leading to extended pre-revenue periods that deplete capital and allow competitors to establish market dominance while the venture remains unable to commercialize.",
+    "de_risking_plan": {
+      "research_strategies": [
+        {
+          "action_title": "Regulatory Pathway Comparative Analysis",
+          "description": "Conduct a comprehensive analysis of all potential regulatory pathways for Gen IV nuclear technology, including 10 CFR Part 50/52 licensing, Part 53 advanced reactor frameworks, and any alternative or expedited pathways available through DOE programs.",
+          "mitigation_effect": "Identifies optimal regulatory pathway(s) and provides clarity on timeline expectations, reducing uncertainty and enabling better planning for capital deployment.",
+          "effort_level": "Medium (Time)",
+          "potential_challenges": "Regulatory frameworks for Gen IV technology are still evolving, making analysis complex and potentially requiring frequent updates."
+        },
+        {
+          "action_title": "Regulatory Timeline Benchmarking Study",
+          "description": "Analyze historical approval timelines for nuclear technologies, creating benchmarks specifically for various Gen IV technologies and identifying factors that accelerated or delayed past approvals.",
+          "mitigation_effect": "Provides realistic timeline expectations and identifies specific factors that can be proactively managed to reduce regulatory delays.",
+          "effort_level": "Medium (Cost & Time)",
+          "potential_challenges": "Limited historical data specifically for Gen IV technologies."
+        }
+      ],
+      "test_strategies": [
+        {
+          "action_title": "Pre-Application NRC Engagement Program",
+          "description": "Establish a structured program of early and continuous engagement with NRC staff through pre-application meetings, topical report submissions, and regulatory issue resolution before formal application submission.",
+          "mitigation_effect": "Identifies and resolves potential regulatory concerns earlier in the process, reducing the risk of major delays during formal review periods.",
+          "effort_level": "High (Resource Intensive)",
+          "potential_challenges": "Requires significant investment in regulatory resources before formal submission, with potential for shifting regulatory expectations."
+        },
+        {
+          "action_title": "Regulatory Issue Tracking System",
+          "description": "Develop and implement a comprehensive system to track, prioritize, and resolve potential regulatory issues with assigned ownership and timeline projections.",
+          "mitigation_effect": "Enables proactive management of regulatory risks and provides early warning of potential approval delays.",
+          "effort_level": "Medium (Process)",
+          "potential_challenges": "Requires integration across multiple technical and regulatory teams."
+        }
+      ],
+      "act_strategies": [
+        {
+          "action_title": "Strategic Regulatory Affairs Team Expansion",
+          "description": "Recruit seasoned nuclear regulatory affairs professionals with specific NRC and Gen IV technology experience, potentially including former NRC staff with relevant expertise.",
+          "mitigation_effect": "Improves quality of regulatory submissions, strengthens NRC relationships, and expedites resolution of regulatory issues.",
+          "effort_level": "High (Cost)",
+          "potential_challenges": "Limited talent pool with specific Gen IV regulatory expertise."
+        },
+        {
+          "action_title": "Phased Commercialization Strategy",
+          "description": "Develop a phased commercial deployment strategy that generates revenue streams during the regulatory process (e.g., through TRISO-X fuel sales, licensing arrangements, heat supply agreements pending full approvals).",
+          "mitigation_effect": "Reduces impact of regulatory delays by creating alternative revenue streams during extended approval periods, limiting capital depletion.",
+          "effort_level": "High (Strategic Shift)",
+          "potential_challenges": "May require business model adjustments and creation of intermediary market offerings."
+        }
+      ]
+    }
+  },
+  {
+    "question_number": 2,
+    "question_text": "What evidence suggests industrial customers and data centers are willing to adopt Generation IV nuclear technology over increasingly cost-competitive alternatives like renewables with storage or hydrogen-ready gas turbines?",
+    "risk_category": "Technology Adoption Risk",
+    "probability": 4,
+    "impact": 5,
+    "risk_score": 20,
+    "risk_tier": "High",
+    "justification": "Industrial customers and data centers prioritize reliability, cost-effectiveness, and rapid deployment\u2014areas where unproven Generation IV nuclear technology may struggle against established alternatives. Without demonstrated commercial installations and operational data, adoption rates could severely underperform projections, especially with rapidly improving economics for competing solutions.",
+    "de_risking_plan": {
+      "research_strategies": [
+        {
+          "action_title": "Customer Decision Criteria Analysis",
+          "description": "Conduct comprehensive research with 20-30 potential industrial customers and data centers to understand their specific decision factors, timelines, and barriers to adopting Generation IV nuclear versus alternatives.",
+          "mitigation_effect": "Reduces probability by identifying specific concerns about adoption and providing insights to refine product, messaging, and go-to-market strategy.",
+          "effort_level": "Medium (Time)",
+          "potential_challenges": "Gaining access to decision-makers; obtaining candid feedback on hypothetical adoption scenarios."
+        },
+        {
+          "action_title": "Competitive Technology TCO Analysis",
+          "description": "Commission third-party total cost of ownership (TCO) analysis comparing Gen IV nuclear with renewables+storage and hydrogen solutions across 15-30 year timeframes for various use cases.",
+          "mitigation_effect": "Reduces probability by creating objective economic data to address customer concerns about cost-competitiveness and ROI timelines.",
+          "effort_level": "Medium (Cost)",
+          "potential_challenges": "Obtaining accurate data for emerging technologies; accounting for rapidly evolving cost structures of alternatives."
+        }
+      ],
+      "test_strategies": [
+        {
+          "action_title": "Reference Customer Program",
+          "description": "Develop a structured program with commercial incentives for 3-5 early adopters (ideally including a major data center operator) to serve as reference installations with shared data collection and validation.",
+          "mitigation_effect": "Reduces both probability and impact by creating proof points for subsequent customers and generating real-world operational data.",
+          "effort_level": "High (Strategic & Financial)",
+          "potential_challenges": "Requires significant financial incentives; lengthy sales and implementation cycles."
+        },
+        {
+          "action_title": "Industrial Heat Application Pilot",
+          "description": "Implement a smaller-scale demonstration specifically for industrial heat applications with a willing industrial partner (potentially leveraging Dow relationship).",
+          "mitigation_effect": "Reduces impact by validating technology in one key segment, creating momentum for broader adoption.",
+          "effort_level": "High (Technical & Coordination)",
+          "potential_challenges": "Technical integration complexities; regulatory approvals; customer willingness to be first."
+        }
+      ],
+      "act_strategies": [
+        {
+          "action_title": "Phased Deployment Model",
+          "description": "Develop commercial models enabling customers to start with a single 80MWe unit before committing to a full 4-pack, with contractual paths for expansion.",
+          "mitigation_effect": "Reduces probability by lowering initial adoption barriers and allowing customers to gain comfort with the technology through real experience.",
+          "effort_level": "Medium (Business Model)",
+          "potential_challenges": "Impact on unit economics; capacity planning challenges; potential inefficiencies in deployment."
+        },
+        {
+          "action_title": "Performance-Based Pricing Structure",
+          "description": "Create innovative commercial agreements that align financial incentives with performance guarantees, such as availability-based pricing or energy-as-a-service models.",
+          "mitigation_effect": "Reduces probability by shifting technology risk from customers to the company, addressing adoption hesitancy.",
+          "effort_level": "High (Financial & Legal)",
+          "potential_challenges": "Financial risk exposure; complex contract structures; potential investor concerns."
+        }
+      ]
+    }
+  },
+  {
+    "question_number": 3,
+    "question_text": "How does the venture plan to navigate the competitive landscape from both established nuclear players and adjacent technologies (renewables, traditional nuclear, fossil fuels with CCS) that are capturing significant decarbonization budgets?",
+    "risk_category": "Competitive Landscape Risk",
+    "probability": 5,
+    "impact": 4,
+    "risk_score": 20,
+    "risk_tier": "High",
+    "justification": "The decarbonization market features intense competition from established nuclear companies, renewable energy providers, and fossil fuel players transitioning to cleaner technologies. These competitors have operational track records, existing customer relationships, and substantial capital resources that a pre-revenue startup lacks, potentially limiting its ability to capture meaningful market share.",
+    "de_risking_plan": {
+      "research_strategies": [
+        {
+          "action_title": "Competitive Differentiation Analysis",
+          "description": "Conduct comprehensive analysis of all competing technologies (established nuclear, renewables, fossil fuels with CCS) mapping their cost structures, performance metrics, target markets, and timelines to commercial deployment.",
+          "mitigation_effect": "Identifies specific technological and market advantages the Xe-100 has over each competitor type, enabling more focused marketing and customer targeting where the venture has clear advantages.",
+          "effort_level": "Medium (Time & Expertise)",
+          "potential_challenges": "Accessing accurate cost and performance data from competitors; rapidly evolving technology landscape."
+        },
+        {
+          "action_title": "Decarbonization Budget Allocation Study",
+          "description": "Research how government, utility, and industrial decarbonization budgets are currently allocated across different technologies and the decision criteria used for these allocations.",
+          "mitigation_effect": "Enables the company to better position its technology to capture larger portions of decarbonization budgets by aligning with key decision criteria and identifying upcoming funding opportunities.",
+          "effort_level": "Medium (Research Intensive)",
+          "potential_challenges": "Budget allocation data may be proprietary or difficult to obtain in detail."
+        }
+      ],
+      "test_strategies": [
+        {
+          "action_title": "Industrial Heat Application Pilot Program",
+          "description": "Develop a structured pilot program targeting the industrial heat segment where the Xe-100 has advantages over renewables, leveraging the existing Dow partnership as a showcase.",
+          "mitigation_effect": "Creates documented evidence of superior performance in specific applications where competing technologies struggle, building credibility and differentiating from both traditional nuclear and renewables.",
+          "effort_level": "High (Resources & Time)",
+          "potential_challenges": "Pre-revenue status may limit ability to execute multiple pilots; regulatory approvals for pilots."
+        },
+        {
+          "action_title": "Hybrid Integration Testing",
+          "description": "Develop and test integration frameworks showing how Xe-100 can complement rather than compete with renewables, creating hybrid energy systems that outperform single-technology approaches.",
+          "mitigation_effect": "Positions the company as complementary to (rather than competing with) renewable investments, potentially turning renewable providers into partners rather than competitors.",
+          "effort_level": "Medium (Technical & Partnership Development)",
+          "potential_challenges": "Technical complexity of integration; willingness of renewable providers to partner."
+        }
+      ],
+      "act_strategies": [
+        {
+          "action_title": "Market Segment Specialization Campaign",
+          "description": "Develop specialized marketing, sales and deployment plans for the industrial heat application segment where the Xe-100's high-temperature capabilities provide unique advantages over both renewables and traditional nuclear.",
+          "mitigation_effect": "Focuses resources on market segments with least direct competition and highest differentiation, establishing market leadership in specific applications before broader competitive battles intensify.",
+          "effort_level": "Medium (Strategic Focus)",
+          "potential_challenges": "Balancing specialized focus with need for broader market development."
+        },
+        {
+          "action_title": "Strategic Alliance Development Program",
+          "description": "Proactively develop strategic alliances with complementary technology providers, industrial customers, and potentially with select competitors to create combined solutions that capture larger portions of decarbonization budgets.",
+          "mitigation_effect": "Transforms potential competitors into collaborators, creates more comprehensive solutions that compete more effectively against traditional technologies, and accelerates market access through partners' existing relationships.",
+          "effort_level": "High (Strategic & Relationship Development)",
+          "potential_challenges": "Negotiating mutually beneficial terms; maintaining technology protection while collaborating."
+        }
+      ]
+    }
+  },
+  {
+    "question_number": 1,
+    "question_text": "How does the venture reconcile its projected TAM growth with historically slow nuclear adoption rates and third-party market reports showing significantly different market sizes for Generation IV technology?",
+    "risk_category": "Market Size & Growth Risk",
+    "probability": 4,
+    "impact": 4,
+    "risk_score": 16,
+    "risk_tier": "High",
+    "justification": "Nuclear power has historically faced slow adoption due to regulatory hurdles, high capital costs, and safety concerns. A pre-revenue startup's TAM projections that differ significantly from third-party market reports likely reflects optimistic assumptions that may not materialize, threatening investment returns and valuation justification.",
+    "de_risking_plan": {
+      "status": "Not high priority for strategy generation this run"
+    }
+  },
+  {
+    "question_number": 5,
+    "question_text": "How reliant is the venture's market growth on government grants, subsidies, and favorable policies, and what is the impact on market viability if such support is reduced or withdrawn?",
+    "risk_category": "Policy Dependency Risk",
+    "probability": 4,
+    "impact": 4,
+    "risk_score": 16,
+    "risk_tier": "High",
+    "justification": "Nuclear ventures typically depend heavily on government subsidies, tax credits, and supportive policies to achieve economic viability. Political shifts or budgetary constraints could rapidly change the subsidy landscape, potentially rendering the venture's business model unviable if it cannot compete on pure market economics without ongoing government support.",
+    "de_risking_plan": {
+      "status": "Not high priority for strategy generation this run"
+    }
+  }
+]

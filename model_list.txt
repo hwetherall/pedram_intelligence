@@ -1,0 +1,17 @@
+LLM_MODELS = [
+    "openai/o1-mini",
+    "anthropic/claude-3.7-sonnet:thinking",
+    "google/gemini-2.5-flash-preview:thinking",
+    "x-ai/grok-3-beta",
+    "deepseek/deepseek-chat-v3-0324",
+    "arcee-ai/maestro-reasoning",
+    "qwen/qwq-32b",
+    "perplexity/sonar-reasoning-pro",
+    "meta-llama/llama-4-maverick",
+    "mistralai/mistral-medium-3"
+]
+
+# Models to use in test mode - just 2 models for faster testing
+TEST_LLM_MODELS = [
+    "meta-llama/llama-4-maverick",
+    "qwen/qwq-32b"

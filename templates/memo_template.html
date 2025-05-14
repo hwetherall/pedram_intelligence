@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Intelligence Brief: {{ company_name }} - Market Analysis</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; line-height: 1.6; }
+        h1, h2, h3, h4 { color: #333; }
+        h1 { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .section { margin-bottom: 30px; padding: 15px; border: 1px solid #eee; border-radius: 5px; background-color: #f9f9f9;}
+        .question-block { margin-bottom: 20px; padding-left: 15px; border-left: 3px solid #007bff; }
+        .risk-details { margin-left: 20px; font-size: 0.9em; }
+        .strategies { margin-left: 20px; }
+        .strategies h5 { margin-top: 10px; margin-bottom: 5px; color: #555;}
+        .strategies ul { list-style-type: disc; margin-left: 20px; padding-left: 0;}
+        blockquote { font-style: italic; color: #555; border-left: 2px solid #ccc; padding-left: 10px; margin-left: 0; }
+        .reflection-section ul { list-style-type: square; }
+        .separator { border-bottom: 1px dashed #ccc; margin: 25px 0; }
+        /* Add more styles for tables, colors, etc. */
+    </style>
+</head>
+<body>
+    <h1>INTELLIGENCE BRIEF: MARKET ANALYSIS</h1>
+
+    <div class="section">
+        <p><strong>COMPANY:</strong> {{ company_context }}</p>
+        <p><strong>ANALYSIS SECTION:</strong> Market Risk & Opportunity</p>
+        <p><strong>DATE OF ANALYSIS:</strong> {{ analysis_date }}</p>
+        <p><strong>SOURCES CONSULTED:</strong> Pitch Deck, Market Report, Market Chapter</p>
+    </div>
+
+    {% if executive_summary %}
+    <div class="section">
+        <h2>I. EXECUTIVE SUMMARY</h2>
+        <p>{{ executive_summary }}</p>
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <h2>II. TOP 5 CRITICAL MARKET QUESTIONS & RISK ANALYSIS</h2>
+        {% for item in final_questions_with_details %}
+            <div class="question-block">
+                <h4>CRITICAL QUESTION #{{ item.question_data.question_number }}:</h4>
+                <blockquote>{{ item.question_data.question_text }}</blockquote>
+                <p><strong>Reasoning for Criticality:</strong> {{ item.question_data.reasoning }}</p>
+
+                {% if item.risk_assessment_data %}
+                    <div class="risk-details">
+                        <strong>Risk Assessment:</strong>
+                        <ul>
+                            <li><strong>Risk Category:</strong> {{ item.risk_assessment_data.risk_category }}</li>
+                            <li><strong>Probability:</strong> {{ item.risk_assessment_data.probability }}/5</li>
+                            <li><strong>Impact:</strong> {{ item.risk_assessment_data.impact }}/5</li>
+                            <li><strong>Overall Risk Score:</strong> {{ item.risk_assessment_data.risk_score }} (Tier: {{ item.risk_assessment_data.risk_tier }})</li>
+                            <li><strong>Justification for Risk Score:</strong> {{ item.risk_assessment_data.justification }}</li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <p><em>No risk assessment data available for this question.</em></p>
+                {% endif %}
+
+                {% if item.derisking_plan and (item.derisking_plan.research_strategies or item.derisking_plan.test_strategies or item.derisking_plan.act_strategies) %}
+                    <div class="strategies">
+                        <h5>Proposed De-risking Strategies:</h5>
+                        {% if item.derisking_plan.research_strategies %}
+                            <strong>Research:</strong>
+                            <ul>
+                            {% for strategy in item.derisking_plan.research_strategies %}
+                                <li><strong>{{ strategy.action_title }}</strong>: {{ strategy.description }} (Effort: {{ strategy.effort_level }})</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if item.derisking_plan.test_strategies %}
+                            <strong>Test:</strong>
+                            <ul>
+                            {% for strategy in item.derisking_plan.test_strategies %}
+                                <li><strong>{{ strategy.action_title }}</strong>: {{ strategy.description }} (Effort: {{ strategy.effort_level }})</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if item.derisking_plan.act_strategies %}
+                            <strong>Act:</strong>
+                            <ul>
+                            {% for strategy in item.derisking_plan.act_strategies %}
+                                <li><strong>{{ strategy.action_title }}</strong>: {{ strategy.description }} (Effort: {{ strategy.effort_level }})</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% elif item.derisking_plan and item.derisking_plan.status %}
+                    <p><em>De-risking Status: {{ item.derisking_plan.status }}</em></p>
+                {% endif %}
+            </div>
+            {% if not loop.last %}<div class="separator"></div>{% endif %}
+        {% endfor %}
+    </div>
+
+    {% if strategic_reflection %}
+    <div class="section">
+        <h2>III. STRATEGIC REFLECTION: I LIKE, I WISH, I WONDER</h2>
+        <div class="reflection-section">
+            {% if strategic_reflection.i_like_reflection %}
+                <h4>I LIKE (Strengths & Opportunities to Build Upon):</h4>
+                <ul>
+                {% for item in strategic_reflection.i_like_reflection %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            {% if strategic_reflection.i_wish_reflection %}
+                <h4>I WISH (Strategic Gaps & Desired Shifts):</h4>
+                <ul>
+                {% for item in strategic_reflection.i_wish_reflection %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            {% if strategic_reflection.i_wonder_reflection %}
+                <h4>I WONDER (Pivotal Uncertainties & Future Explorations):</h4>
+                <ul>
+                {% for item in strategic_reflection.i_wonder_reflection %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Optional Appendix Section -->
+
+</body>
+</html>
