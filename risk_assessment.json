@@ -1,0 +1,49 @@
+{
+  "risks": [
+    {
+      "question_number": 1,
+      "risk_category": "Market Risk",
+      "probability": 4,
+      "impact": 5,
+      "risk_score": 20,
+      "risk_tier": "High",
+      "justification": "X-Energy's TAM projection contradicts industry-wide contraction trends, suggesting significant market forecasting errors. The substantial discrepancy between projected growth and industry decline indicates a high probability of overestimated market opportunity that could fundamentally undermine the business case."
+    },
+    {
+      "question_number": 2,
+      "risk_category": "Technology Adoption Risk",
+      "probability": 4,
+      "impact": 4,
+      "risk_score": 16,
+      "risk_tier": "High",
+      "justification": "Generation IV nuclear technologies face significant market barriers including high upfront capital costs, public perception issues, and competition from increasingly cost-effective renewables. The historical slow adoption rate of new nuclear technologies coupled with the accelerating deployment of alternative clean energy solutions creates substantial market penetration challenges."
+    },
+    {
+      "question_number": 3,
+      "risk_category": "Strategic Positioning Risk",
+      "probability": 3,
+      "impact": 4,
+      "risk_score": 12,
+      "risk_tier": "Medium",
+      "justification": "While industrial heat and hydrogen production represent potentially valuable market segments, they remain nascent applications for nuclear technology with unproven commercial viability at scale. The pivot away from traditional electricity generation introduces market uncertainty, though successful differentiation could provide competitive advantage if demand materializes."
+    },
+    {
+      "question_number": 4,
+      "risk_category": "Regulatory and Policy Risk",
+      "probability": 5,
+      "impact": 5,
+      "risk_score": 25,
+      "risk_tier": "High",
+      "justification": "Nuclear power is exceptionally dependent on government policies, subsidies and regulatory frameworks that can change with political administrations. The extensive licensing and approval processes for new nuclear designs create high probability of delays and cost overruns that could significantly impact X-Energy's time-to-market and competitive position."
+    },
+    {
+      "question_number": 5,
+      "risk_category": "Competitive Technology Risk",
+      "probability": 3,
+      "impact": 4,
+      "risk_score": 12,
+      "risk_tier": "Medium",
+      "justification": "Multiple Generation IV nuclear technologies are competing for limited initial deployment opportunities and investment capital. X-Energy's TRISO-X and Xe-100 technology must demonstrate clear cost, performance, or safety advantages over alternatives like TerraPower's sodium-cooled designs to secure market share in this emerging segment."
+    }
+  ]
+}
