@@ -666,7 +666,7 @@ def main_cli():
         mr_text = "Placeholder market report text."
         print("Using placeholder text instead.")
     
-    company_context_cli = input("Enter company context (e.g., 'I am an investor in a USA based Nuclear Power Generating Startup that is pre-revenue and Series'): ").strip()
+    company_context_cli = input("Enter company context (e.g., 'I am an investor in a USA based Nuclear Power Generating Startup that is pre-revenue and Series C'): ").strip()
     if not company_context_cli:
         company_context_cli = "Test Venture: AI for climate change mitigation, pre-seed."
 
@@ -969,7 +969,7 @@ def main_cli():
         mr_text = "Placeholder market report text."
         print("Using placeholder text instead.")
     
-    company_context_cli = input("Enter company context (e.g., 'I am an investor in a USA based Nuclear Power Generating Startup that is pre-revenue and Series'): ").strip()
+    company_context_cli = input("Enter company context (e.g., 'I am an investor in a USA based Nuclear Power Generating Startup that is pre-revenue and Series C'): ").strip()
     if not company_context_cli:
         company_context_cli = "Test Venture: AI for climate change mitigation, pre-seed." # Default context
 
@@ -1068,22 +1068,116 @@ def main_cli():
     # If derisking_strategies_cli is still None here, it means the phase wasn't run and no file was loaded.
     # This is fine for Phase 6, as it can handle missing de-risking data.
 
-    # --- Phase 6: Strategic Reflection (I Like, I Wish, I Wonder) ---
+# --- Phase 6: Strategic Reflection (I Like, I Wish, I Wonder) ---
+    strategic_reflection_output_cli = None # Initialize to None HERE
+
     if input("\nRun Phase 6 (Strategic Reflection - I Like, I Wish, I Wonder)? (y/n): ").lower() == 'y':
-        # Phase 6 needs: company_context, final_questions_data, risk_assessment_data (the dict),
-        # derisking_data (the list from Phase 5), and extracted_data.
-        perform_strategic_reflection(
-            extracted_data_cli["context"],
-            final_questions_cli,          # Loaded or generated in Phase 3
-            risk_assessment_output_cli,   # Loaded or generated in Phase 4
-            derisking_strategies_cli,     # Loaded or generated in Phase 5 (can be None)
-            extracted_data_cli            # From Phase 1
-        )
+        # Ensure all necessary inputs for perform_strategic_reflection are defined
+        # (final_questions_cli, risk_assessment_output_cli, derisking_strategies_cli, extracted_data_cli)
+        if final_questions_cli and risk_assessment_output_cli and extracted_data_cli: # derisking_strategies_cli can be None
+            strategic_reflection_output_cli = perform_strategic_reflection( # Assign to the variable
+                extracted_data_cli["context"],
+                final_questions_cli,
+                risk_assessment_output_cli,
+                derisking_strategies_cli, 
+                extracted_data_cli
+            )
+        else:
+            print("Skipping Phase 6: Missing data from prerequisite phases.")
     elif os.path.exists("strategic_reflection.json"):
-        print("Found existing strategic_reflection.json. CLI run complete.")
+        if input("Load existing strategic_reflection.json for Phase 6 context? (y/n): ").lower() == 'y': # Optional: prompt to load if skipping run
+            try:
+                with open("strategic_reflection.json", "r", encoding="utf-8") as f:
+                    strategic_reflection_output_cli = json.load(f) # Assign to the variable
+                print("Loaded strategic reflection data from file.")
+            except Exception as e:
+                print(f"Error loading strategic_reflection.json: {e}")
+                # strategic_reflection_output_cli remains None
+        else:
+            print("Found existing strategic_reflection.json, but not loaded by user choice for Phase 6.")
+            # strategic_reflection_output_cli remains None
+    else:
+        print("Skipping Phase 6 (no existing file and not run).")
+        # strategic_reflection_output_cli remains None
 
 
-    print("\nCLI Workflow complete!")
+# --- Final Report Generation ---
+        if REPORTING_MODULE_AVAILABLE:
+            if input("\nGenerate Final Report Memo (HTML/PDF)? (y/n): ").lower() == 'y':
+                # Initialize all data pieces for the report to None.
+                # These will be overridden if the corresponding phase was run or data loaded.
+                final_q_data_for_report = None
+                if 'final_questions_cli' in locals() and final_questions_cli is not None:
+                    final_q_data_for_report = final_questions_cli
+
+                risk_assessment_data_for_report = None
+                if 'risk_assessment_output_cli' in locals() and risk_assessment_output_cli is not None:
+                    risk_assessment_data_for_report = risk_assessment_output_cli
+                
+                derisking_data_for_report = None
+                if 'derisking_strategies_cli' in locals() and derisking_strategies_cli is not None:
+                    derisking_data_for_report = derisking_strategies_cli
+                
+                # Handle strategic_reflection_output_for_report carefully
+                strategic_reflection_output_for_report = None # Initialize to None
+
+                # Check if strategic_reflection_output_cli was set by running Phase 6 in this session
+                # 'strategic_reflection_output_cli' is the variable that 'perform_strategic_reflection' would return its result to.
+                # We need to ensure it's declared IF phase 6 was run.
+                # The Phase 6 block should look like this:
+                # strategic_reflection_output_cli = None # Initialize before the if
+                # if input(... "Run Phase 6" ...).lower() == 'y':
+                #    strategic_reflection_output_cli = perform_strategic_reflection(...)
+                # elif os.path.exists("strategic_reflection.json"):
+                #    # load into strategic_reflection_output_cli
+                #    ...
+
+                # So, by the time we reach here, 'strategic_reflection_output_cli' should be defined
+                # if the Phase 6 logic was structured to always define it (even if to None).
+                # Let's assume the Phase 6 block correctly sets 'strategic_reflection_output_cli' or leaves it as None.
+
+                if 'strategic_reflection_output_cli' in locals() and strategic_reflection_output_cli is not None:
+                    strategic_reflection_output_for_report = strategic_reflection_output_cli
+                    print("Using strategic reflection data generated in this session for the report.")
+                elif os.path.exists("strategic_reflection.json"):
+                    try:
+                        with open("strategic_reflection.json", "r", encoding="utf-8") as f:
+                            strategic_reflection_output_for_report = json.load(f)
+                        print("Loaded strategic reflection data from file for report.")
+                    except Exception as e:
+                        print(f"Could not load strategic_reflection.json for report: {e}")
+                        # strategic_reflection_output_for_report remains None
+                else:
+                    # This case means Phase 6 wasn't run in this session AND strategic_reflection.json doesn't exist.
+                    # strategic_reflection_output_for_report remains None.
+                    print("No strategic reflection data available from current session or file for report.")
+
+
+                # Now, check if all *essential* data for the report is present
+                if final_q_data_for_report and \
+                   risk_assessment_data_for_report and \
+                   strategic_reflection_output_for_report: # Reflection data is essential for this report structure
+                    
+                    reporting.create_final_report(
+                        extracted_data_cli["context"],
+                        final_q_data_for_report,
+                        risk_assessment_data_for_report, # This is the dict {"risks": [...]}
+                        derisking_data_for_report,       # This is the list of risks, some with "de_risking_plan" (can be None)
+                        strategic_reflection_output_for_report,
+                        output_base_filename="intelligence_brief_final" 
+                    )
+                else:
+                    print("Cannot generate report: Missing essential data from one or more critical phases.")
+                    if not final_q_data_for_report: 
+                        print("- Final Questions data is missing or was not loaded/generated.")
+                    if not risk_assessment_data_for_report: 
+                        print("- Risk Assessment data is missing or was not loaded/generated.")
+                    if not strategic_reflection_output_for_report: 
+                        print("- Strategic Reflection data is missing (Phase 6 likely not run and file not found/loaded).")
+        else:
+            print("Skipping final report generation as reporting.py module is not available (ImportError).")
+           
+        # print("\nCLI Workflow complete!") # This line should already be the very last line of main_cli
 
 
 if __name__ == "__main__":
