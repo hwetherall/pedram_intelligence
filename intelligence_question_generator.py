@@ -446,57 +446,53 @@ def consolidate_questions(all_questions):
 
 def create_risk_assessment_prompt(final_questions):
     """
-    Create the prompt for assessing risks based on the final questions.
+    Create the prompt for risk assessment of the final questions.
     
     Args:
         final_questions (list): List of dictionaries containing the final questions and their reasoning
         
     Returns:
-        str: The formatted prompt for the risk assessment
+        str: The formatted prompt for the high-reasoning model
     """
-    # Format questions and reasoning
-    questions_text = ""
-    for q in final_questions:
-        questions_text += f"Question {q['question_number']}: {q['question']}\n"
-        questions_text += f"Reasoning: {q['reasoning']}\n\n"
+    # Format the questions as a numbered list
+    questions_text = "\n\n".join([
+        f"Question {q['question_number']}: {q['question']}\nReasoning: {q['reasoning']}"
+        for q in final_questions
+    ])
     
-    prompt = f"""You are an expert risk analyst evaluating a nuclear power startup (X-Energy). I need you to assess and quantify the risks identified in these intelligence questions:
+    prompt = f"""You are a risk assessment expert analyzing critical market questions for a nuclear power startup (X-Energy). For each of the following 5 questions, you need to assign two scores:
 
-{questions_text}
+1. Probability Score (1-5):
+   - 1: Very unlikely to occur
+   - 2: Unlikely to occur
+   - 3: Possible to occur
+   - 4: Likely to occur
+   - 5: Near certainty to occur
 
-For each of the 5 questions, please:
+2. Impact Score (1-5):
+   - 1: Minimal impact, easily managed
+   - 2: Minor impact on the business
+   - 3: Moderate impact requiring significant attention
+   - 4: Major impact threatening business viability
+   - 5: Catastrophic impact that could cause company collapse
 
-1. Identify and categorize the specific type of risk (e.g., Regulatory Risk, Supply Chain Risk, etc.)
+For each question, analyze:
+- The underlying risk expressed in the question
+- Available information about X-Energy and the nuclear industry
+- Market dynamics and regulatory conditions mentioned in the question
+- Historical precedents for similar risks in the industry
 
-2. Score each risk on:
-   - Probability (1-5 scale, where 1 = Very Low, 5 = Very High)
-   - Impact (1-5 scale, where 1 = Minimal, 5 = Severe)
-   - Calculate an Overall Risk Score (Probability × Impact)
-   - Classify the risk tier (Low: 1-6, Medium: 7-15, High: 16-25)
+Then provide:
+- A probability score (1-5)
+- An impact score (1-5)
+- The overall risk score (probability + impact, range 2-10)
+- A brief justification for your scores (2-3 sentences)
 
-3. Provide a brief justification (2-3 sentences) for each scoring decision based on the information provided.
+Format your response as a structured assessment for each question, followed by a risk ranking table at the end.
 
-Format your response as a structured JSON object with the following schema:
+Here are the questions to assess:
 
-```
-{
-  "risks": [
-    {
-      "question_number": 1,
-      "risk_category": "Category name",
-      "probability": 1-5,
-      "impact": 1-5,
-      "risk_score": calculated value,
-      "risk_tier": "Low/Medium/High",
-      "justification": "Your justification here"
-    },
-    ...additional risks...
-  ]
-}
-```
-
-Return ONLY valid JSON with no additional text, explanations, or markdown formatting.
-"""
+{questions_text}"""
     
     return prompt
 
@@ -508,43 +504,47 @@ def extract_risk_assessment(response):
         response (dict): The API response data
         
     Returns:
-        dict: Dictionary containing the risk assessment
+        list: List of dictionaries containing the risk assessment
     """
     if not response or 'choices' not in response or not response['choices']:
-        return None
+        return []
     
     # Extract the response content
     content = response['choices'][0]['message']['content'].strip()
     
-    # Parse the JSON
-    try:
-        # Remove any markdown code block indicators if present
-        if content.startswith("```json"):
-            content = content.replace("```json", "", 1)
-        if content.startswith("```"):
-            content = content.replace("```", "", 1)
-        if content.endswith("```"):
-            content = content[:content.rfind("```")]
-            
-        # Parse the JSON
-        risk_assessment = json.loads(content.strip())
-        return risk_assessment
-    except json.JSONDecodeError as e:
-        print(f"Error parsing risk assessment JSON: {str(e)}")
-        print(f"Response content: {content}")
-        return None
+    # Parse the risk assessment
+    import re
+    
+    # Define the pattern to extract question number, probability, impact, overall score and justification
+    pattern = r'Question (\d+).*?Probability Score:?\s*(\d+).*?Impact Score:?\s*(\d+).*?Overall Risk Score:?\s*(\d+).*?Justification:?\s*(.*?)(?=\s*Question \d+:|Risk Ranking|$)'
+    matches = re.findall(pattern, content, re.DOTALL)
+    
+    risk_assessment = []
+    for question_num, probability, impact, overall, justification in matches:
+        risk_assessment.append({
+            "question_number": int(question_num),
+            "probability_score": int(probability),
+            "impact_score": int(impact),
+            "overall_risk_score": int(overall),
+            "justification": justification.strip()
+        })
+    
+    # Sort by question number
+    risk_assessment.sort(key=lambda x: x["question_number"])
+    
+    return risk_assessment
 
-def perform_risk_assessment(final_questions):
+def assess_risks(final_questions):
     """
-    Perform risk assessment on the final questions.
+    Assess the risks identified in the final questions.
     
     Args:
         final_questions (list): List of dictionaries containing the final questions and their reasoning
         
     Returns:
-        dict: Dictionary containing the risk assessment
+        list: List of dictionaries containing the risk assessment
     """
-    print("\n--- Performing Risk Assessment (Phase 4) ---\n")
+    print("\n--- Assessing Risks (Phase 4) ---\n")
     
     # Create the prompt
     prompt = create_risk_assessment_prompt(final_questions)
@@ -556,91 +556,64 @@ def perform_risk_assessment(final_questions):
     
     if not response:
         print("Error: Failed to get response from high-reasoning model")
-        return None
+        return []
     
     # Extract the risk assessment
     risk_assessment = extract_risk_assessment(response)
     
-    if not risk_assessment:
-        print("Error: Failed to parse risk assessment from response")
-        return None
+    # Match risk assessment with questions
+    for risk in risk_assessment:
+        for question in final_questions:
+            if risk["question_number"] == question["question_number"]:
+                risk["question"] = question["question"]
+                break
+    
+    # Sort by overall risk score (highest first)
+    risk_assessment.sort(key=lambda x: x["overall_risk_score"], reverse=True)
+    
+    # Print the risk assessment
+    print("\nRisk Assessment Results (Sorted by Overall Risk Score):")
+    print("\n{:<5} {:<45} {:<15} {:<15} {:<15}".format("Rank", "Question Excerpt", "Probability", "Impact", "Overall Score"))
+    print("-" * 100)
+    
+    for i, risk in enumerate(risk_assessment):
+        # Truncate question text for display
+        question_excerpt = risk["question"][:42] + "..." if len(risk["question"]) > 45 else risk["question"]
+        print("{:<5} {:<45} {:<15} {:<15} {:<15}".format(
+            i + 1,
+            question_excerpt,
+            risk["probability_score"],
+            risk["impact_score"],
+            risk["overall_risk_score"]
+        ))
+    
+    print("\nDetailed Risk Analysis:")
+    for i, risk in enumerate(risk_assessment):
+        print(f"\nRisk #{i + 1}: Question {risk['question_number']}")
+        print(f"Question: {risk['question']}")
+        print(f"Probability Score: {risk['probability_score']}")
+        print(f"Impact Score: {risk['impact_score']}")
+        print(f"Overall Risk Score: {risk['overall_risk_score']}")
+        print(f"Justification: {risk['justification']}")
     
     # Save results to a file
     print("\nSaving risk assessment to 'risk_assessment.json'...")
     with open("risk_assessment.json", "w", encoding="utf-8") as f:
         json.dump(risk_assessment, f, indent=2)
     
-    # Print the risk assessment
-    display_risk_assessment(risk_assessment)
+    # Determine risk severity distribution
+    high_risks = len([r for r in risk_assessment if r["overall_risk_score"] >= 8])
+    medium_risks = len([r for r in risk_assessment if 5 <= r["overall_risk_score"] < 8])
+    low_risks = len([r for r in risk_assessment if r["overall_risk_score"] < 5])
     
-    print(f"Completed Phase 4: Risk Assessment")
+    print("\nRisk Severity Distribution:")
+    print(f"High Risk (8-10): {high_risks}")
+    print(f"Medium Risk (5-7): {medium_risks}")
+    print(f"Low Risk (2-4): {low_risks}")
+    
+    print(f"\nCompleted Phase 4: Risk Assessment of {len(risk_assessment)} critical questions")
     
     return risk_assessment
-
-def display_risk_assessment(risk_assessment):
-    """
-    Display the risk assessment in a formatted table.
-    
-    Args:
-        risk_assessment (dict): Dictionary containing the risk assessment
-    """
-    if not risk_assessment or 'risks' not in risk_assessment:
-        print("No risk assessment data to display.")
-        return
-    
-    risks = risk_assessment['risks']
-    
-    # Sort risks by risk score (highest to lowest)
-    risks.sort(key=lambda x: x['risk_score'], reverse=True)
-    
-    # Print header
-    print("\n=== RISK ASSESSMENT SUMMARY ===\n")
-    
-    # Calculate column widths
-    col_q = 1
-    col_cat = max(len("Risk Category"), max(len(r['risk_category']) for r in risks))
-    col_prob = 4  # "Prob"
-    col_imp = 3    # "Imp"
-    col_score = 5  # "Score"
-    col_tier = max(len("Tier"), max(len(r['risk_tier']) for r in risks))
-    
-    # Print table header
-    header = f"| Q | {' Risk Category'.ljust(col_cat)} | Prob | Imp | Score | {' Tier'.ljust(col_tier)} |"
-    separator = f"|{'-'*(col_q+2)}|{'-'*(col_cat+2)}|{'-'*(col_prob+2)}|{'-'*(col_imp+2)}|{'-'*(col_score+2)}|{'-'*(col_tier+2)}|"
-    
-    print(header)
-    print(separator)
-    
-    # Print table rows
-    for risk in risks:
-        q_num = risk['question_number']
-        category = risk['risk_category']
-        probability = risk['probability']
-        impact = risk['impact']
-        score = risk['risk_score']
-        tier = risk['risk_tier']
-        
-        row = f"| {q_num} | {category.ljust(col_cat)} | {str(probability).center(4)} | {str(impact).center(3)} | {str(score).center(5)} | {tier.ljust(col_tier)} |"
-        print(row)
-    
-    print(separator)
-    
-    # Print detailed assessments
-    print("\n=== DETAILED RISK ASSESSMENTS ===\n")
-    
-    for risk in risks:
-        q_num = risk['question_number']
-        category = risk['risk_category']
-        probability = risk['probability']
-        impact = risk['impact']
-        score = risk['risk_score']
-        tier = risk['risk_tier']
-        justification = risk['justification']
-        
-        print(f"Risk {q_num}: {category} (Score: {score}, Tier: {tier})")
-        print(f"Probability: {probability}/5, Impact: {impact}/5")
-        print(f"Justification: {justification}")
-        print()
 
 def main():
     """Main execution function"""
@@ -719,17 +692,17 @@ def main():
     # Phase 3: Consolidate questions
     final_questions = None
     
-    # Check if we already have final questions
+    # Check if we already have consolidated questions
     if os.path.exists("final_questions.json"):
-        print("\nFound existing final questions file.")
-        proceed = input("Do you want to use the existing final questions? (y/n): ").strip().lower()
+        print("\nFound existing consolidated questions file.")
+        proceed = input("Do you want to use the existing consolidated questions? (y/n): ").strip().lower()
         if proceed == 'y':
             try:
                 with open("final_questions.json", "r", encoding="utf-8") as f:
                     final_questions = json.load(f)
-                print(f"Loaded {len(final_questions)} existing final questions.")
+                print(f"Loaded {len(final_questions)} existing consolidated questions.")
             except Exception as e:
-                print(f"Error loading existing final questions: {str(e)}")
+                print(f"Error loading existing consolidated questions: {str(e)}")
                 final_questions = None
     
     if final_questions is None:
@@ -742,26 +715,15 @@ def main():
         final_questions = consolidate_questions(pms_questions)
     
     # Phase 4: Risk Assessment
-    if os.path.exists("risk_assessment.json"):
-        print("\nFound existing risk assessment file.")
-        proceed = input("Do you want to use the existing risk assessment? (y/n): ").strip().lower()
-        if proceed == 'y':
-            try:
-                with open("risk_assessment.json", "r", encoding="utf-8") as f:
-                    risk_assessment = json.load(f)
-                display_risk_assessment(risk_assessment)
-                print("Completed Phase 4: Risk Assessment")
-            except Exception as e:
-                print(f"Error loading existing risk assessment: {str(e)}")
-                risk_assessment = None
-    else:
-        proceed = input("\nDo you want to proceed to Phase 4 (Risk Assessment)? (y/n): ").strip().lower()
-        if proceed != 'y':
-            print("Exiting. You can run the program again to continue.")
-            return
-        
-        # Perform risk assessment
-        risk_assessment = perform_risk_assessment(final_questions)
+    proceed = input("\nDo you want to proceed to Phase 4 (Risk Assessment)? (y/n): ").strip().lower()
+    if proceed != 'y':
+        print("Exiting. You can run the program again to continue.")
+        return
+    
+    # Assess risks
+    risk_assessment = assess_risks(final_questions)
+    
+    print("\nWorkflow complete!")
 
 if __name__ == "__main__":
     main() 
