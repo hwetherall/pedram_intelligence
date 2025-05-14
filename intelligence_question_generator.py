@@ -56,6 +56,7 @@ def extract_text_from_pdf(pdf_path):
         print(f"Error extracting text from PDF {pdf_path}: {str(e)}")
         return ""
 
+# Replaced by the app.py interface
 def get_user_input():
     """
     Get user inputs for the Market Chapter, Context, and PDF file paths.
@@ -66,9 +67,9 @@ def get_user_input():
     print("\n--- Intelligence Questions Generator ---\n")
     
     # Hardcoded file paths
-    market_chapter_path = r"C:\Users\hweth\OneDrive\Desktop\Innovera\Logo Project\pedram_intelligence\marketchapter.txt"
-    pitch_deck_path = r"C:\Users\hweth\OneDrive\Desktop\Innovera\Logo Project\pedram_intelligence\pitch_deck.pdf"
-    market_report_path = r"C:\Users\hweth\OneDrive\Desktop\Innovera\Logo Project\pedram_intelligence\market_report.pdf"
+    market_chapter_path = r"C:\Users\felip\OneDrive\Área de Trabalho\Innovera\Pedram intelligence\pedram_intelligence\marketchapter.txt"
+    pitch_deck_path = r"C:\Users\felip\OneDrive\Área de Trabalho\Innovera\Pedram intelligence\pedram_intelligence\pitch_deck.pdf"
+    market_report_path = r"C:\Users\felip\OneDrive\Área de Trabalho\Innovera\Pedram intelligence\pedram_intelligence\market_report.pdf"
     
     # Read Market Chapter from file
     market_chapter_text = ""
