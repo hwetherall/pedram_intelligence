@@ -1,49 +1,42 @@
-{
-  "risks": [
-    {
-      "question_number": 1,
-      "risk_category": "Market Risk",
-      "probability": 4,
-      "impact": 5,
-      "risk_score": 20,
-      "risk_tier": "High",
-      "justification": "X-Energy's TAM projection contradicts industry-wide contraction trends, suggesting significant market forecasting errors. The substantial discrepancy between projected growth and industry decline indicates a high probability of overestimated market opportunity that could fundamentally undermine the business case."
-    },
-    {
-      "question_number": 2,
-      "risk_category": "Technology Adoption Risk",
-      "probability": 4,
-      "impact": 4,
-      "risk_score": 16,
-      "risk_tier": "High",
-      "justification": "Generation IV nuclear technologies face significant market barriers including high upfront capital costs, public perception issues, and competition from increasingly cost-effective renewables. The historical slow adoption rate of new nuclear technologies coupled with the accelerating deployment of alternative clean energy solutions creates substantial market penetration challenges."
-    },
-    {
-      "question_number": 3,
-      "risk_category": "Strategic Positioning Risk",
-      "probability": 3,
-      "impact": 4,
-      "risk_score": 12,
-      "risk_tier": "Medium",
-      "justification": "While industrial heat and hydrogen production represent potentially valuable market segments, they remain nascent applications for nuclear technology with unproven commercial viability at scale. The pivot away from traditional electricity generation introduces market uncertainty, though successful differentiation could provide competitive advantage if demand materializes."
-    },
-    {
-      "question_number": 4,
-      "risk_category": "Regulatory and Policy Risk",
-      "probability": 5,
-      "impact": 5,
-      "risk_score": 25,
-      "risk_tier": "High",
-      "justification": "Nuclear power is exceptionally dependent on government policies, subsidies and regulatory frameworks that can change with political administrations. The extensive licensing and approval processes for new nuclear designs create high probability of delays and cost overruns that could significantly impact X-Energy's time-to-market and competitive position."
-    },
-    {
-      "question_number": 5,
-      "risk_category": "Competitive Technology Risk",
-      "probability": 3,
-      "impact": 4,
-      "risk_score": 12,
-      "risk_tier": "Medium",
-      "justification": "Multiple Generation IV nuclear technologies are competing for limited initial deployment opportunities and investment capital. X-Energy's TRISO-X and Xe-100 technology must demonstrate clear cost, performance, or safety advantages over alternatives like TerraPower's sodium-cooled designs to secure market share in this emerging segment."
-    }
-  ]
-}
+[
+  {
+    "question_number": 4,
+    "probability_score": 4,
+    "impact_score": 5,
+    "overall_risk_score": 9,
+    "justification": "** Policy and regulatory shifts affecting nuclear power are likely given historical volatility in energy policy and the politically contentious nature of nuclear energy. The impact could be catastrophic as unfavorable regulatory decisions or policy changes could completely halt deployment, regardless of technological readiness or market demand.\n\n##",
+    "question": "How might changes in government policies and incentives, such as the Inflation Reduction Act, affect the market demand for nuclear power, and what regulatory risks could impede X-Energy's time-to-market compared to competitors?"
+  },
+  {
+    "question_number": 1,
+    "probability_score": 4,
+    "impact_score": 4,
+    "overall_risk_score": 8,
+    "justification": "** The contradiction between X-Energy's growth projections and industry decline creates a high probability of market overestimation. If actual addressable market proves substantially smaller, this would significantly threaten business viability by undermining the entire investment thesis and revenue model.\n\n##",
+    "question": "How does X-Energy reconcile its projected $7.0 billion Worldwide TAM by 2024 with the broader nuclear power industry's declining revenue (-0.9% CAGR 2019-2024) and decreasing grid share (from 19.1% to 17.6% 2019-2023)?"
+  },
+  {
+    "question_number": 2,
+    "probability_score": 5,
+    "impact_score": 3,
+    "overall_risk_score": 8,
+    "justification": "** Market barriers to nuclear adoption are virtually certain to persist based on historical patterns and current market conditions. The impact is moderated by X-Energy's potential technological advantages and policy support, but will still require significant resources and strategy adjustments to overcome.\n\n##",
+    "question": "What are the primary market barriers to the adoption of Generation IV nuclear technology, and how does X-Energy plan to overcome these challenges compared to competing clean energy alternatives?"
+  },
+  {
+    "question_number": 3,
+    "probability_score": 3,
+    "impact_score": 4,
+    "overall_risk_score": 7,
+    "justification": "** While there's theoretical demand for clean industrial heat and hydrogen production, the commercial viability remains uncertain, making insufficient market demand possible. If these specialized markets fail to materialize at projected scale, X-Energy would face major impacts requiring substantial business model revision.\n\n##",
+    "question": "How does X-Energy's focus on industrial heat applications and hydrogen production differentiate it from competitors, and what market research validates sufficient demand in these sectors to justify the pivot away from traditional electricity generation?"
+  },
+  {
+    "question_number": 5,
+    "probability_score": 3,
+    "impact_score": 3,
+    "overall_risk_score": 6,
+    "justification": "** Competitive disadvantages are possible as multiple Generation IV technologies race",
+    "question": "How does X-Energy's TRISO-X fuel and Xe-100 technology compete on cost, performance, and safety with alternative Generation IV technologies like TerraPower's sodium-cooled designs that are also nearing deployment?"
+  }
+]
