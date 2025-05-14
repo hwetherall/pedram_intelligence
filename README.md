@@ -51,9 +51,30 @@ The application will:
 2. Prompt you to enter the Context information
 3. Extract text from the specified PDF files
 4. Save the extracted data to `extracted_data.json`
+5. Ask if you want to proceed to Phase 2 (generating questions)
+6. If yes, call 10 different LLMs through OpenRouter to generate questions
+7. Save the generated questions to `pms_questions.json`
+
+## LLM Models Used
+
+The application uses the following 10 LLM models from OpenRouter:
+
+1. openai/o1-mini
+2. anthropic/claude-3.7-sonnet:thinking
+3. google/gemini-2.5-flash-preview:thinking
+4. x-ai/grok-3-beta
+5. deepseek/deepseek-chat-v3-0324
+6. arcee-ai/maestro-reasoning
+7. qwen/qwq-32b
+8. perplexity/sonar-reasoning-pro
+9. meta-llama/llama-4-maverick
+10. mistralai/mistral-medium-3
 
 ## Current Status
 
 This is an MVP (Minimum Viable Product) version. Current functionality:
-- Input processing and PDF text extraction
-- (Future phases will add LLM integration, question generation, and risk assessment) # pedram_intelligence
+- Phase 1: Input processing and PDF text extraction ✓
+- Phase 2: Generating PMS questions using 10 different LLMs via OpenRouter ✓
+- Phase 3: Consolidating and refining questions with a high-reasoning model (Not implemented yet)
+- Phase 4: Applying the risk assessment framework (Not implemented yet)
+- Phase 5: Developing de-risking strategies (Not implemented yet) 

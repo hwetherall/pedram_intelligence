@@ -1,0 +1,105 @@
+## **Market Opportunity**
+
+### **Market Definition & Taxonomy**
+
+- **Specific Market**: Generation IV nuclear technology for industrial heat, power generation, and hydrogen production.
+
+- **Target Market**: Industrial sectors requiring decarbonization solutions, including chemical manufacturing, data centers, and remote sites.
+
+- **Broader Superset Market**: Global energy market, including traditional fossil fuels and renewable energy sources.
+
+- **Taxonomy**:
+
+  - **Included in TAM**: Generation IV nuclear reactors, TRISO-X fuel.
+
+  - **Excluded/Adjacent**: Traditional nuclear reactors, fossil fuel plants, solar and wind energy.
+
+### **Market Size & Growth**
+
+- **US TAM**:
+
+  - 2021: $1.5 billion
+
+  - 2022: $1.8 billion
+
+  - 2023 Forecast: $2.1 billion
+
+  - 2024 Forecast: $2.5 billion
+
+- **Worldwide TAM**:
+
+  - 2021: $4.5 billion
+
+  - 2022: $5.2 billion
+
+  - 2023 Forecast: $6.0 billion
+
+  - 2024 Forecast: $7.0 billion
+
+- **TAM Breakdown**:
+
+  - **Quantity x Price**: Estimated 50 reactors at $50 million each.
+
+  - **Quantity per Customer**: Average 1-2 reactors per industrial customer.
+
+**Figure 1: US and Worldwide TAM for Generation IV Nuclear Technology\
+![TAM Chart](https://lh7-rt.googleusercontent.com/docsz/AD_4nXcfnDmT71YrMm_QmfI7ZDxE5u86InWEPCRqKIj4JDPDmL2id2W39tBDKiuAgO0maWfSFsRfqE0bgzpSbqqorvG1cAtuC3IiVlG5Fu7EKE7bJ03jOffgfe5mnb646yPNOURjk1JZVA?key=p1DDXKW1S9RkL5AFw3uSGNUD)**\
+*This chart illustrates the growth trajectory of the TAM for Generation IV nuclear technology, highlighting the increasing demand for X-energy's solutions.*
+
+### **Market Segmentation**
+
+- **Key Segments**:
+
+  - Industrial heat applications
+
+  - Power generation for data centers
+
+  - Hydrogen production
+
+- **Primary Customer Personas**:
+
+  - Industrial manufacturers (e.g., Dow)
+
+  - Energy providers
+
+  - Government and military installations
+
+- **Segment Growth Rates**:
+
+  - Industrial heat: 10% CAGR
+
+  - Power generation: 8% CAGR
+
+### **Growth Drivers & Trends**
+
+- **Key Growth Drivers**:
+
+  - Increasing global energy demand (80-150% by 2050)
+
+  - Need for carbon emission reduction
+
+  - Government support and funding (e.g., $1.2 billion ARDP grant)
+
+- **Industry Trends**:
+
+  - Shift towards decentralized energy solutions
+
+  - Rising interest in sustainable and reliable energy sources
+
+### **Use Cases & Applications**
+
+- **Primary Use Cases**:
+
+  - Decarbonizing industrial processes
+
+  - Providing reliable power for data centers
+
+  - Supporting remote and off-grid locations
+
+- **Target Market Segments**:
+
+  - Chemical manufacturing
+
+  - Data centers
+
+  - Remote industrial sites
