@@ -4,6 +4,7 @@
 # Extracted data
 extracted_data.json
 pms_questions.json
+final_questions.json
 *_extracted.txt
 
 # Python

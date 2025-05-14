@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+# Test mode - when True, only uses 2 LLMs instead of all 10
+TEST_MODE = True
+
 # List of LLM models to use for generating questions
 LLM_MODELS = [
     "openai/o1-mini",
@@ -21,6 +24,15 @@ LLM_MODELS = [
     "meta-llama/llama-4-maverick",
     "mistralai/mistral-medium-3"
 ]
+
+# Models to use in test mode - just 2 models for faster testing
+TEST_LLM_MODELS = [
+    "meta-llama/llama-4-maverick",
+    "qwen/qwq-32b"
+]
+
+# High-reasoning model for consolidation and refinement
+HIGH_REASONING_MODEL = "anthropic/claude-3.7-sonnet:thinking"
 
 def extract_text_from_pdf(pdf_path):
     """
@@ -131,9 +143,21 @@ def create_pms_prompt(market_chapter, pitch_deck_text, market_report_text, conte
 And the following context for evaluation:
 Context: {context}
 
-Please act as a highly intelligent and skeptical investor. Your goal is to identify potential weaknesses and critical risks.
-Generate exactly 10 distinct questions that probe the "Point of Maximum Skepticism" (PMS) for the venture described.
-Focus your questions on specific, non-generic aspects of the venture, its market, technology, and business model, viewed through the lens of the provided context. The questions should highlight significant risks or reasons the venture might face major challenges or fail.
+Please act as a highly intelligent and skeptical investor. Your goal is to identify potential weaknesses and critical risks SPECIFICALLY RELATED TO THE MARKET ASPECTS of this venture.
+
+IMPORTANT: Focus ONLY on market-related questions. DO NOT ask about finances, team, operations, go-to-market strategy, or other non-market aspects. These will be addressed in separate sections.
+
+Your questions should focus on:
+- Market size, growth, and trends
+- Competition and market positioning
+- Market barriers and challenges
+- Market adoption of the technology
+- Regulatory environment affecting the market
+- How X-Energy specifically plays within this market
+- Market-specific risks
+
+Generate exactly 10 distinct questions that probe the "Point of Maximum Skepticism" (PMS) for the market aspects of the venture described.
+The questions should highlight significant market-related risks or reasons the venture might face major challenges or fail due to market factors.
 
 Output only the 10 questions, each on a new line. Do not include preambles or any other text."""
     
@@ -220,7 +244,7 @@ def extract_questions_from_response(response):
 
 def generate_pms_questions(extracted_data):
     """
-    Generate Point of Maximum Skepticism (PMS) questions using 10 different LLMs.
+    Generate Point of Maximum Skepticism (PMS) questions using LLMs.
     
     Args:
         extracted_data (dict): Dictionary containing the extracted data
@@ -228,7 +252,15 @@ def generate_pms_questions(extracted_data):
     Returns:
         dict: Dictionary mapping model names to their generated questions
     """
-    print("\n--- Generating PMS Questions (Phase 2) ---\n")
+    # Select which models to use based on test mode
+    models_to_use = TEST_LLM_MODELS if TEST_MODE else LLM_MODELS
+    
+    # Display appropriate message based on mode
+    if TEST_MODE:
+        print("\n--- Generating PMS Questions (Phase 2 - TEST MODE) ---\n")
+        print(f"Running in test mode with {len(models_to_use)} LLMs instead of all 10")
+    else:
+        print("\n--- Generating PMS Questions (Phase 2) ---\n")
     
     # Create the prompt
     prompt = create_pms_prompt(
@@ -242,8 +274,8 @@ def generate_pms_questions(extracted_data):
     results = {}
     
     # Call each LLM model
-    for i, model in enumerate(LLM_MODELS):
-        print(f"Calling model {i+1}/10: {model}...")
+    for i, model in enumerate(models_to_use):
+        print(f"Calling model {i+1}/{len(models_to_use)}: {model}...")
         
         # Call the API
         response = call_openrouter_api(model, prompt)
@@ -262,7 +294,7 @@ def generate_pms_questions(extracted_data):
             results[model] = [f"[Failed to generate question from model {model}]" for _ in range(10)]
         
         # Add a delay between API calls to avoid rate limiting
-        if i < len(LLM_MODELS) - 1:
+        if i < len(models_to_use) - 1:
             print(f"  Waiting before next model call...")
             time.sleep(2)
     
@@ -277,11 +309,349 @@ def generate_pms_questions(extracted_data):
     
     return results
 
+def create_consolidation_prompt(all_questions):
+    """
+    Create the prompt for consolidating and refining the 100 questions.
+    
+    Args:
+        all_questions (dict): Dictionary mapping model names to their generated questions
+        
+    Returns:
+        str: The formatted prompt for the high-reasoning model
+    """
+    # Flatten all questions into a single list with numbers
+    flat_questions = []
+    for model, questions in all_questions.items():
+        for question in questions:
+            if not question.startswith("[Failed"):  # Skip placeholder questions
+                flat_questions.append(question)
+    
+    # Format the questions as a numbered list
+    questions_text = "\n".join([f"{i+1}. {q}" for i, q in enumerate(flat_questions)])
+    
+    prompt = f"""You have been provided with questions generated by various AI models. These questions concern a venture, focusing specifically on MARKET-RELATED aspects. Your task is to analyze these questions and produce a final, refined list of the top 5 most critical and insightful market-focused questions.
+
+Follow these steps:
+1. **Pattern Recognition & Thematic Grouping:** Read all the questions. Identify recurring themes or areas of concern related to markets (e.g., market size, competition, market barriers, regulatory environment affecting markets, market adoption). Group similar questions, even if phrased differently.
+2. **Synthesize or Select Exemplars:** For each major market-focused theme you identify, either:
+   a. Craft a new, comprehensive "meta-question" that captures the core concern of the grouped questions.
+   b. Or, select the single best-phrased, most impactful question from a group to serve as an exemplar for that theme.
+3. **Prioritize for Top 5:** From your synthesized/selected questions, determine the 5 most critical ones. Prioritize questions that highlight fundamental market-related risks or points of maximum skepticism about the market aspects.
+4. **Provide Reasoning:** For each of your final 5 questions, write a brief explanation (1-2 sentences) justifying why this question is critical from a market perspective.
+
+IMPORTANT: Focus ONLY on market-related questions. If you find questions about finances, team, operations, or other non-market aspects, ignore them for this analysis.
+
+Output the results in the following format:
+
+Question 1: [The text of the first final question]
+Reasoning: [Your justification for this question]
+
+Question 2: [The text of the second final question]
+Reasoning: [Your justification for this question]
+
+...and so on for all 5 questions.
+
+Here are the questions to analyze:
+
+{questions_text}"""
+    
+    return prompt
+
+def extract_final_questions(response):
+    """
+    Extract the 5 final questions and their reasoning from the API response.
+    
+    Args:
+        response (dict): The API response data
+        
+    Returns:
+        list: List of dictionaries containing the final questions and their reasoning
+    """
+    if not response or 'choices' not in response or not response['choices']:
+        return []
+    
+    # Extract the response content
+    content = response['choices'][0]['message']['content'].strip()
+    
+    # Parse the final questions and reasoning
+    import re
+    
+    # Look for "Question X:" followed by the question and "Reasoning:" followed by the reasoning
+    pattern = r'Question\s+\d+:\s+(.*?)\s*\nReasoning:\s+(.*?)(?=\n\s*Question\s+\d+:|$)'
+    matches = re.findall(pattern, content, re.DOTALL)
+    
+    final_questions = []
+    for i, (question, reasoning) in enumerate(matches[:5]):  # Limit to 5 questions
+        final_questions.append({
+            "question": question.strip(),
+            "reasoning": reasoning.strip(),
+            "question_number": i + 1
+        })
+    
+    # If we didn't get 5 questions, look for other formats or add placeholders
+    if len(final_questions) < 5:
+        print(f"Warning: Could only extract {len(final_questions)} questions from the response.")
+        # Add placeholders for missing questions
+        for i in range(len(final_questions), 5):
+            final_questions.append({
+                "question": f"[Failed to extract question {i+1}]",
+                "reasoning": "[Failed to extract reasoning]",
+                "question_number": i + 1
+            })
+    
+    return final_questions
+
+def consolidate_questions(all_questions):
+    """
+    Consolidate and refine the 100 questions into 5 critical questions using a high-reasoning model.
+    
+    Args:
+        all_questions (dict): Dictionary mapping model names to their generated questions
+        
+    Returns:
+        list: List of dictionaries containing the final questions and their reasoning
+    """
+    print("\n--- Consolidating Questions (Phase 3) ---\n")
+    
+    # Create the prompt
+    prompt = create_consolidation_prompt(all_questions)
+    
+    print(f"Calling high-reasoning model ({HIGH_REASONING_MODEL}) to consolidate questions...")
+    
+    # Call the API
+    response = call_openrouter_api(HIGH_REASONING_MODEL, prompt)
+    
+    if not response:
+        print("Error: Failed to get response from high-reasoning model")
+        return []
+    
+    # Extract the final questions
+    final_questions = extract_final_questions(response)
+    
+    # Print the final questions
+    print("\nFinal Consolidated Questions:")
+    for q in final_questions:
+        print(f"\nQuestion {q['question_number']}: {q['question']}")
+        print(f"Reasoning: {q['reasoning']}")
+    
+    # Save results to a file
+    print("\nSaving consolidated questions to 'final_questions.json'...")
+    with open("final_questions.json", "w", encoding="utf-8") as f:
+        json.dump(final_questions, f, indent=2)
+    
+    print(f"Completed Phase 3: Consolidated to {len(final_questions)} critical questions")
+    
+    return final_questions
+
+def create_risk_assessment_prompt(final_questions):
+    """
+    Create the prompt for assessing risks based on the final questions.
+    
+    Args:
+        final_questions (list): List of dictionaries containing the final questions and their reasoning
+        
+    Returns:
+        str: The formatted prompt for the risk assessment
+    """
+    # Format questions and reasoning
+    questions_text = ""
+    for q in final_questions:
+        questions_text += f"Question {q['question_number']}: {q['question']}\n"
+        questions_text += f"Reasoning: {q['reasoning']}\n\n"
+    
+    prompt = f"""You are an expert risk analyst evaluating a nuclear power startup (X-Energy). I need you to assess and quantify the risks identified in these intelligence questions:
+
+{questions_text}
+
+For each of the 5 questions, please:
+
+1. Identify and categorize the specific type of risk (e.g., Regulatory Risk, Supply Chain Risk, etc.)
+
+2. Score each risk on:
+   - Probability (1-5 scale, where 1 = Very Low, 5 = Very High)
+   - Impact (1-5 scale, where 1 = Minimal, 5 = Severe)
+   - Calculate an Overall Risk Score (Probability × Impact)
+   - Classify the risk tier (Low: 1-6, Medium: 7-15, High: 16-25)
+
+3. Provide a brief justification (2-3 sentences) for each scoring decision based on the information provided.
+
+Format your response as a structured JSON object with the following schema:
+
+```
+{
+  "risks": [
+    {
+      "question_number": 1,
+      "risk_category": "Category name",
+      "probability": 1-5,
+      "impact": 1-5,
+      "risk_score": calculated value,
+      "risk_tier": "Low/Medium/High",
+      "justification": "Your justification here"
+    },
+    ...additional risks...
+  ]
+}
+```
+
+Return ONLY valid JSON with no additional text, explanations, or markdown formatting.
+"""
+    
+    return prompt
+
+def extract_risk_assessment(response):
+    """
+    Extract the risk assessment from the API response.
+    
+    Args:
+        response (dict): The API response data
+        
+    Returns:
+        dict: Dictionary containing the risk assessment
+    """
+    if not response or 'choices' not in response or not response['choices']:
+        return None
+    
+    # Extract the response content
+    content = response['choices'][0]['message']['content'].strip()
+    
+    # Parse the JSON
+    try:
+        # Remove any markdown code block indicators if present
+        if content.startswith("```json"):
+            content = content.replace("```json", "", 1)
+        if content.startswith("```"):
+            content = content.replace("```", "", 1)
+        if content.endswith("```"):
+            content = content[:content.rfind("```")]
+            
+        # Parse the JSON
+        risk_assessment = json.loads(content.strip())
+        return risk_assessment
+    except json.JSONDecodeError as e:
+        print(f"Error parsing risk assessment JSON: {str(e)}")
+        print(f"Response content: {content}")
+        return None
+
+def perform_risk_assessment(final_questions):
+    """
+    Perform risk assessment on the final questions.
+    
+    Args:
+        final_questions (list): List of dictionaries containing the final questions and their reasoning
+        
+    Returns:
+        dict: Dictionary containing the risk assessment
+    """
+    print("\n--- Performing Risk Assessment (Phase 4) ---\n")
+    
+    # Create the prompt
+    prompt = create_risk_assessment_prompt(final_questions)
+    
+    print(f"Calling high-reasoning model ({HIGH_REASONING_MODEL}) to assess risks...")
+    
+    # Call the API
+    response = call_openrouter_api(HIGH_REASONING_MODEL, prompt)
+    
+    if not response:
+        print("Error: Failed to get response from high-reasoning model")
+        return None
+    
+    # Extract the risk assessment
+    risk_assessment = extract_risk_assessment(response)
+    
+    if not risk_assessment:
+        print("Error: Failed to parse risk assessment from response")
+        return None
+    
+    # Save results to a file
+    print("\nSaving risk assessment to 'risk_assessment.json'...")
+    with open("risk_assessment.json", "w", encoding="utf-8") as f:
+        json.dump(risk_assessment, f, indent=2)
+    
+    # Print the risk assessment
+    display_risk_assessment(risk_assessment)
+    
+    print(f"Completed Phase 4: Risk Assessment")
+    
+    return risk_assessment
+
+def display_risk_assessment(risk_assessment):
+    """
+    Display the risk assessment in a formatted table.
+    
+    Args:
+        risk_assessment (dict): Dictionary containing the risk assessment
+    """
+    if not risk_assessment or 'risks' not in risk_assessment:
+        print("No risk assessment data to display.")
+        return
+    
+    risks = risk_assessment['risks']
+    
+    # Sort risks by risk score (highest to lowest)
+    risks.sort(key=lambda x: x['risk_score'], reverse=True)
+    
+    # Print header
+    print("\n=== RISK ASSESSMENT SUMMARY ===\n")
+    
+    # Calculate column widths
+    col_q = 1
+    col_cat = max(len("Risk Category"), max(len(r['risk_category']) for r in risks))
+    col_prob = 4  # "Prob"
+    col_imp = 3    # "Imp"
+    col_score = 5  # "Score"
+    col_tier = max(len("Tier"), max(len(r['risk_tier']) for r in risks))
+    
+    # Print table header
+    header = f"| Q | {' Risk Category'.ljust(col_cat)} | Prob | Imp | Score | {' Tier'.ljust(col_tier)} |"
+    separator = f"|{'-'*(col_q+2)}|{'-'*(col_cat+2)}|{'-'*(col_prob+2)}|{'-'*(col_imp+2)}|{'-'*(col_score+2)}|{'-'*(col_tier+2)}|"
+    
+    print(header)
+    print(separator)
+    
+    # Print table rows
+    for risk in risks:
+        q_num = risk['question_number']
+        category = risk['risk_category']
+        probability = risk['probability']
+        impact = risk['impact']
+        score = risk['risk_score']
+        tier = risk['risk_tier']
+        
+        row = f"| {q_num} | {category.ljust(col_cat)} | {str(probability).center(4)} | {str(impact).center(3)} | {str(score).center(5)} | {tier.ljust(col_tier)} |"
+        print(row)
+    
+    print(separator)
+    
+    # Print detailed assessments
+    print("\n=== DETAILED RISK ASSESSMENTS ===\n")
+    
+    for risk in risks:
+        q_num = risk['question_number']
+        category = risk['risk_category']
+        probability = risk['probability']
+        impact = risk['impact']
+        score = risk['risk_score']
+        tier = risk['risk_tier']
+        justification = risk['justification']
+        
+        print(f"Risk {q_num}: {category} (Score: {score}, Tier: {tier})")
+        print(f"Probability: {probability}/5, Impact: {impact}/5")
+        print(f"Justification: {justification}")
+        print()
+
 def main():
     """Main execution function"""
     # Check if OpenRouter API key is available
     if not validate_openrouter_api_key():
         return
+    
+    # Display test mode notice
+    if TEST_MODE:
+        print("\n*** RUNNING IN TEST MODE ***")
+        print("Using only 2 LLMs instead of all 10 for faster testing.")
+        print(f"Test LLMs: {', '.join(TEST_LLM_MODELS)}")
     
     # Get user inputs
     user_inputs = get_user_input()
@@ -319,18 +689,78 @@ def main():
     print("Completed Phase 1: Input Processing")
     print("Extracted data has been saved to 'extracted_data.json'")
     
-    # Ask user if they want to proceed to Phase 2
-    proceed = input("\nDo you want to proceed to Phase 2 (Generating PMS Questions)? (y/n): ").strip().lower()
-    if proceed != 'y':
-        print("Exiting. You can run the program again to continue.")
-        return
+    # Phase 2: Generate PMS questions
+    pms_questions = None
     
-    # Generate PMS questions
-    pms_questions = generate_pms_questions(extracted_data)
+    # Check if we already have generated questions
+    if os.path.exists("pms_questions.json"):
+        print("\nFound existing PMS questions file.")
+        proceed = input("Do you want to use the existing questions? (y/n): ").strip().lower()
+        if proceed == 'y':
+            try:
+                with open("pms_questions.json", "r", encoding="utf-8") as f:
+                    pms_questions = json.load(f)
+                print(f"Loaded {sum(len(questions) for questions in pms_questions.values())} existing questions.")
+            except Exception as e:
+                print(f"Error loading existing questions: {str(e)}")
+                pms_questions = None
     
-    print("\nNext steps will include:")
-    print("1. Consolidating and refining the questions with a high-reasoning model (Phase 3)")
-    print("2. Applying the risk assessment framework (Phase 4)")
+    if pms_questions is None:
+        # Ask user if they want to proceed to Phase 2
+        proceed = input("\nDo you want to proceed to Phase 2 (Generating PMS Questions)? (y/n): ").strip().lower()
+        if proceed != 'y':
+            print("Exiting. You can run the program again to continue.")
+            return
+        
+        # Generate PMS questions
+        pms_questions = generate_pms_questions(extracted_data)
+    
+    # Phase 3: Consolidate questions
+    final_questions = None
+    
+    # Check if we already have final questions
+    if os.path.exists("final_questions.json"):
+        print("\nFound existing final questions file.")
+        proceed = input("Do you want to use the existing final questions? (y/n): ").strip().lower()
+        if proceed == 'y':
+            try:
+                with open("final_questions.json", "r", encoding="utf-8") as f:
+                    final_questions = json.load(f)
+                print(f"Loaded {len(final_questions)} existing final questions.")
+            except Exception as e:
+                print(f"Error loading existing final questions: {str(e)}")
+                final_questions = None
+    
+    if final_questions is None:
+        proceed = input("\nDo you want to proceed to Phase 3 (Consolidating Questions)? (y/n): ").strip().lower()
+        if proceed != 'y':
+            print("Exiting. You can run the program again to continue.")
+            return
+        
+        # Consolidate questions
+        final_questions = consolidate_questions(pms_questions)
+    
+    # Phase 4: Risk Assessment
+    if os.path.exists("risk_assessment.json"):
+        print("\nFound existing risk assessment file.")
+        proceed = input("Do you want to use the existing risk assessment? (y/n): ").strip().lower()
+        if proceed == 'y':
+            try:
+                with open("risk_assessment.json", "r", encoding="utf-8") as f:
+                    risk_assessment = json.load(f)
+                display_risk_assessment(risk_assessment)
+                print("Completed Phase 4: Risk Assessment")
+            except Exception as e:
+                print(f"Error loading existing risk assessment: {str(e)}")
+                risk_assessment = None
+    else:
+        proceed = input("\nDo you want to proceed to Phase 4 (Risk Assessment)? (y/n): ").strip().lower()
+        if proceed != 'y':
+            print("Exiting. You can run the program again to continue.")
+            return
+        
+        # Perform risk assessment
+        risk_assessment = perform_risk_assessment(final_questions)
 
 if __name__ == "__main__":
     main() 
