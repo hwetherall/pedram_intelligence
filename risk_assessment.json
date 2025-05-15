@@ -1,52 +1,52 @@
 [
   {
-    "question_number": 4,
-    "question_text": "What specific regulatory pathways exist for Gen IV nuclear technology deployment, and how might delays or changes in regulatory approval processes impact market entry timing and competitive positioning?",
-    "risk_category": "Regulatory & Policy Risk",
-    "probability": 5,
-    "impact": 5,
-    "risk_score": 25,
-    "risk_tier": "High",
-    "justification": "Nuclear regulations are notoriously complex and time-consuming, with approval processes often taking 5-10 years even for conventional designs. Novel Generation IV technologies face additional scrutiny, potentially leading to extended pre-revenue periods that deplete capital and allow competitors to establish market dominance while the venture remains unable to commercialize."
-  },
-  {
     "question_number": 2,
-    "question_text": "What evidence suggests industrial customers and data centers are willing to adopt Generation IV nuclear technology over increasingly cost-competitive alternatives like renewables with storage or hydrogen-ready gas turbines?",
+    "question_text": "What compelling evidence suggests industrial customers, data centers, and other target segments will adopt Generation IV nuclear technology despite historically slow nuclear adoption rates, the availability of faster-to-deploy renewable alternatives, and lingering public safety concerns?",
     "risk_category": "Technology Adoption Risk",
     "probability": 4,
     "impact": 5,
     "risk_score": 20,
     "risk_tier": "High",
-    "justification": "Industrial customers and data centers prioritize reliability, cost-effectiveness, and rapid deployment\u2014areas where unproven Generation IV nuclear technology may struggle against established alternatives. Without demonstrated commercial installations and operational data, adoption rates could severely underperform projections, especially with rapidly improving economics for competing solutions."
+    "justification": "Industrial customers and data centers typically prioritize speed to deployment, cost certainty, and public perception in energy decisions. Historical adoption rates for nuclear technology have been extremely slow, and without compelling evidence of market pull rather than technological push, this pre-revenue startup faces significant adoption barriers that could undermine its entire business model."
   },
   {
-    "question_number": 3,
-    "question_text": "How does the venture plan to navigate the competitive landscape from both established nuclear players and adjacent technologies (renewables, traditional nuclear, fossil fuels with CCS) that are capturing significant decarbonization budgets?",
-    "risk_category": "Competitive Landscape Risk",
+    "question_number": 4,
+    "question_text": "Given that only two new nuclear plants have been constructed in the US over the past 20 years despite numerous applications, how will the venture navigate the complex regulatory landscape and lengthy NRC approval process to achieve timely market entry and scale?",
+    "risk_category": "Regulatory & Policy Risk",
     "probability": 5,
     "impact": 4,
     "risk_score": 20,
     "risk_tier": "High",
-    "justification": "The decarbonization market features intense competition from established nuclear companies, renewable energy providers, and fossil fuel players transitioning to cleaner technologies. These competitors have operational track records, existing customer relationships, and substantial capital resources that a pre-revenue startup lacks, potentially limiting its ability to capture meaningful market share."
+    "justification": "The Nuclear Regulatory Commission's approval process represents an extreme barrier to market entry that has prevented numerous nuclear projects from reaching completion. For a pre-revenue Series C startup, regulatory delays will directly impact capital requirements and extend the timeline to commercialization, putting significant pressure on investor returns and potentially requiring additional funding rounds."
   },
   {
     "question_number": 1,
-    "question_text": "How does the venture reconcile its projected TAM growth with historically slow nuclear adoption rates and third-party market reports showing significantly different market sizes for Generation IV technology?",
-    "risk_category": "Market Size & Growth Risk",
+    "question_text": "How will the venture establish meaningful market differentiation and overcome competitive barriers in an industry where three established players control 58% of the market, while simultaneously competing with increasingly cost-effective renewable energy solutions and low-cost natural gas alternatives?",
+    "risk_category": "Competitive Landscape Risk",
     "probability": 4,
     "impact": 4,
     "risk_score": 16,
     "risk_tier": "High",
-    "justification": "Nuclear power has historically faced slow adoption due to regulatory hurdles, high capital costs, and safety concerns. A pre-revenue startup's TAM projections that differ significantly from third-party market reports likely reflects optimistic assumptions that may not materialize, threatening investment returns and valuation justification."
+    "justification": "The nuclear market is highly concentrated with entrenched competitors, while simultaneously facing competition from increasingly affordable renewables and natural gas. As a pre-revenue Series C startup, establishing sufficient differentiation to capture meaningful market share will be exceptionally challenging without revolutionary cost or performance advantages."
+  },
+  {
+    "question_number": 3,
+    "question_text": "Given the historical decline in nuclear power's market share (from 19.1% to 17.6% between 2019-2023) and modest industry growth projections (1.4% CAGR through 2029), what specific evidence supports the venture's TAM projections and growth assumptions for Generation IV nuclear technology?",
+    "risk_category": "Market Size & Growth Risk",
+    "probability": 3,
+    "impact": 5,
+    "risk_score": 15,
+    "risk_tier": "High",
+    "justification": "The venture's growth projections must be viewed against the backdrop of nuclear power's declining market share and modest industry growth. For a Series C startup with significant capital requirements, overestimating the addressable market for Generation IV technology would critically impact valuation and return potential, especially as competing energy sources continue to gain market share."
   },
   {
     "question_number": 5,
-    "question_text": "How reliant is the venture's market growth on government grants, subsidies, and favorable policies, and what is the impact on market viability if such support is reduced or withdrawn?",
-    "risk_category": "Policy Dependency Risk",
+    "question_text": "How vulnerable is the venture's market potential to external factors such as fluctuating uranium prices (which surged 98% in 2024), potential reductions in government incentives, and policy shifts favoring renewable energy sources?",
+    "risk_category": "Strategic Positioning Risk",
     "probability": 4,
-    "impact": 4,
-    "risk_score": 16,
-    "risk_tier": "High",
-    "justification": "Nuclear ventures typically depend heavily on government subsidies, tax credits, and supportive policies to achieve economic viability. Political shifts or budgetary constraints could rapidly change the subsidy landscape, potentially rendering the venture's business model unviable if it cannot compete on pure market economics without ongoing government support."
+    "impact": 3,
+    "risk_score": 12,
+    "risk_tier": "Medium",
+    "justification": "Nuclear ventures are particularly vulnerable to external factors including fuel prices, shifting government incentives, and changing energy policies. The recent 98% surge in uranium prices demonstrates the volatility in input costs, while political uncertainty creates regulatory risk. These factors could significantly alter the cost-competitiveness of the startup's technology relative to increasingly affordable renewable alternatives."
   }
 ]

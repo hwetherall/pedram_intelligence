@@ -35,7 +35,10 @@ if 'reset_phase' not in st.session_state:
     st.session_state.reset_phase = None
 
 # Initialize session state for data
-if 'extracted_data' not in st.session_state or st.session_state.reset_trigger:
+if 'extracted_data' not in st.session_state:
+    st.session_state.extracted_data = None
+    
+if st.session_state.reset_trigger:
     if st.session_state.reset_phase == "all" or st.session_state.reset_phase == "phase1":
         st.session_state.extracted_data = None
     elif os.path.exists(EXTRACTED_DATA_PATH) and st.session_state.extracted_data is None:
@@ -45,7 +48,10 @@ if 'extracted_data' not in st.session_state or st.session_state.reset_trigger:
         except Exception:
             st.session_state.extracted_data = None
 
-if 'pms_questions' not in st.session_state or st.session_state.reset_trigger:
+if 'pms_questions' not in st.session_state:
+    st.session_state.pms_questions = None
+    
+if st.session_state.reset_trigger:
     if st.session_state.reset_phase in ["all", "phase1", "phase2"]:
         st.session_state.pms_questions = None
     elif os.path.exists(PMS_QUESTIONS_PATH) and st.session_state.pms_questions is None:
@@ -55,7 +61,10 @@ if 'pms_questions' not in st.session_state or st.session_state.reset_trigger:
         except Exception:
             st.session_state.pms_questions = None
 
-if 'final_questions' not in st.session_state or st.session_state.reset_trigger:
+if 'final_questions' not in st.session_state:
+    st.session_state.final_questions = None
+    
+if st.session_state.reset_trigger:
     if st.session_state.reset_phase in ["all", "phase1", "phase2", "phase3"]:
         st.session_state.final_questions = None
     elif os.path.exists(FINAL_QUESTIONS_PATH) and st.session_state.final_questions is None:
@@ -65,7 +74,10 @@ if 'final_questions' not in st.session_state or st.session_state.reset_trigger:
         except Exception:
             st.session_state.final_questions = None
 
-if 'risk_assessment' not in st.session_state or st.session_state.reset_trigger:
+if 'risk_assessment' not in st.session_state:
+    st.session_state.risk_assessment = None
+    
+if st.session_state.reset_trigger:
     if st.session_state.reset_phase in ["all", "phase1", "phase2", "phase3", "phase4"]:
         st.session_state.risk_assessment = None
     elif os.path.exists(RISK_ASSESSMENT_PATH) and st.session_state.risk_assessment is None:
@@ -87,7 +99,10 @@ if 'risk_assessment' not in st.session_state or st.session_state.reset_trigger:
         except Exception:
             st.session_state.risk_assessment = None
 
-if 'derisking_strategies' not in st.session_state or st.session_state.reset_trigger:
+if 'derisking_strategies' not in st.session_state:
+    st.session_state.derisking_strategies = None
+    
+if st.session_state.reset_trigger:
     if st.session_state.reset_phase in ["all", "phase1", "phase2", "phase3", "phase4", "phase5"]:
         st.session_state.derisking_strategies = None
     elif os.path.exists(DERISKING_STRATEGIES_PATH) and st.session_state.derisking_strategies is None:
@@ -97,7 +112,10 @@ if 'derisking_strategies' not in st.session_state or st.session_state.reset_trig
         except Exception:
             st.session_state.derisking_strategies = None
 
-if 'strategic_reflection' not in st.session_state or st.session_state.reset_trigger:
+if 'strategic_reflection' not in st.session_state:
+    st.session_state.strategic_reflection = None
+    
+if st.session_state.reset_trigger:
     if st.session_state.reset_phase in ["all", "phase1", "phase2", "phase3", "phase4", "phase5", "phase6"]:
         st.session_state.strategic_reflection = None
     elif os.path.exists(STRATEGIC_REFLECTION_PATH) and st.session_state.strategic_reflection is None:
